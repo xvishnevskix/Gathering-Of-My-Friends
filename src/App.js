@@ -9,27 +9,28 @@ import axios from "axios";
 function App() {
     const [users, setUsers] = React.useState([])
     const [isLoading, setIsLoading] = React.useState(true)
+    const [searchValue, setSearchValue] = React.useState('')
 
     React.useEffect(() => {
-        getUsers()
-    }, [users])
+        fetch(`https://reqres.in/api/users`)
+            .then((res) => res.json())
+            .then((json) => {
+                setUsers(json.data)
+            }).catch(err => {
+                console.warn(err)
+        }).finally(() => {
+            setIsLoading(false)
+        })
+    }, [])
 
-    async function getUsers() {
-       try {
-           const response = await axios.get(`https://reqres.in/api/users`)
-           setUsers(response.data)
-       } catch (e) {
-           console.log(e)
-        } finally {
-           setIsLoading(false)
-       }
+    const onChangeValue = (event) => {
+        setSearchValue(event.target.value)
     }
+
   return (
     <div className="App">
-        {!isLoading ? (
-            <Users users={users} isLoading={isLoading}/>
-        /* <Success /> */
-            ) : ''}
+            <Users searchValue={searchValue} onChangeValue={onChangeValue} users={users} isLoading={isLoading}/>
+        {/*/* <Success /> */}
     </div>
   );
 }
