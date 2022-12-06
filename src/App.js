@@ -10,7 +10,7 @@ function App() {
     const [users, setUsers] = React.useState([])
     const [isLoading, setIsLoading] = React.useState(true)
     const [searchValue, setSearchValue] = React.useState('')
-    const [invites, setInvites] = React.useState('')
+    const [invites, setInvites] = React.useState([])
 
     React.useEffect(() => {
         fetch(`https://reqres.in/api/users`)
@@ -27,10 +27,17 @@ function App() {
     const onChangeValue = (event) => {
         setSearchValue(event.target.value)
     }
+    const onClickInvite = (id) =>{
+        if (invites.includes(id)) {
+            setInvites(prev => prev.filter(_id => _id !== id))
+        } else {
+            setInvites(prev => [...prev, id])
+        }
+    }
 
   return (
     <div className="App">
-            <Users searchValue={searchValue} onChangeValue={onChangeValue} users={users} isLoading={isLoading}/>
+            <Users invites={invites} onClickInvite={onClickInvite} searchValue={searchValue} onChangeValue={onChangeValue} users={users} isLoading={isLoading}/>
         {/*/* <Success /> */}
     </div>
   );

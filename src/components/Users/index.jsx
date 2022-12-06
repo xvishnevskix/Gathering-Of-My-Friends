@@ -2,7 +2,7 @@ import React from 'react';
 import { Skeleton } from './Skeleton';
 import { User } from './User';
 
-export const Users = ({ users, isLoading, onChangeValue, searchValue }) => {
+export const Users = ({ users, isLoading, onChangeValue, searchValue, onClickInvite, invites }) => {
 
   return (
     <>
@@ -26,7 +26,7 @@ export const Users = ({ users, isLoading, onChangeValue, searchValue }) => {
                    return fullName.toLowerCase().includes(searchValue.toLowerCase()) || user.email.toLowerCase().includes(searchValue.toLowerCase())
                })
                    .map((obj) => (
-                   <User key={obj.id} {...obj}/>
+                   <User onClickInvite={onClickInvite} isInvited={invites.includes(obj.id)} key={obj.id} {...obj}/>
                ))
             }
         </ul>
